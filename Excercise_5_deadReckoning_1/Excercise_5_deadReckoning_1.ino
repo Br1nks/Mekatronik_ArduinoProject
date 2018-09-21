@@ -2,18 +2,18 @@
 Servo servoLeft;
 Servo servoRight;
 
-float fullSpeed = 0.178; % [m/s]
-float distance = 2;    % [m]
-float travelTime = (distance/fullSpeed)*1000; [s]
+float fullSpeed = 0.165;
+float distance = 2;
+float travelTime = (distance/fullSpeed)*1000;
 
 void setup() {
   tone(4,3000,1000);
   delay(1000);
 
-  servoLeft.attach(11);
-  servoRight.attach(12);
+  servoLeft.attach(12);
+  servoRight.attach(11);
 
-  FullSpeedAhead(travelTime);
+  FullSpeedBackwards(travelTime);;
   
   servoLeft.detach();
   servoRight.detach();
@@ -32,13 +32,13 @@ void STOP(int delayTime) {
   delay(delayTime);
 }
 
-void LeftQuarterTurn(int delayTime) {
+void RightQuarterTurn(int delayTime) {
   servoLeft.writeMicroseconds(1450);
   servoRight.writeMicroseconds(1450);
   delay(delayTime);
 }
 
-void RightQuarterTurn(int delayTime) {
+void LeftQuarterTurn(int delayTime) {
   servoLeft.writeMicroseconds(1550);
   servoRight.writeMicroseconds(1550);
   delay(delayTime);
@@ -46,8 +46,13 @@ void RightQuarterTurn(int delayTime) {
 
 void FullSpeedAhead(float delayTime) {
   // ~0.18 m/s
-  servoLeft.writeMicroseconds(1345);
+  servoRight.writeMicroseconds(1345);
+  servoLeft.writeMicroseconds(1700);
+  delay(delayTime);
+}
+void FullSpeedBackwards(float delayTime) {
+  // ~0.18 m/s
+  servoLeft.writeMicroseconds(1365);
   servoRight.writeMicroseconds(1700);
   delay(delayTime);
 }
-
