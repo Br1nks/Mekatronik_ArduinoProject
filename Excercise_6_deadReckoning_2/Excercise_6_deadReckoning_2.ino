@@ -6,14 +6,17 @@ float fullSpeed = 0.165;
 float distance = 2;
 float travelTime = (distance/fullSpeed)*1000;
 
+float wheelBase = 0.101; // [m] distance between the wheels
+ 
 void setup() {
+  Serial.begin(9600);
   tone(4,3000,1000);
   delay(1000);
 
   servoLeft.attach(12);
   servoRight.attach(11);
-
-  FullSpeedBackwards(travelTime);;
+  //FullSpeedAhead(travelTime);
+  RightCircularTurn(0.5, 5000);
   
   servoLeft.detach();
   servoRight.detach();
@@ -27,6 +30,15 @@ void measureDistance() {
 void STOP(int delayTime) {
   servoLeft.writeMicroseconds(1500);
   servoRight.writeMicroseconds(1500);
+  delay(delayTime);
+}
+
+void RightCircularTurn(float radius,int delayTime) {
+  int outerWheelSpeed = 1600;
+  float innerWheelSpeed = 1500+(100*(1-(radius+wheelBase)/radius));
+  Serial.println(innerWheelSpeed);
+  servoLeft.writeMicroseconds(outerWheelSpeed);
+  servoRight.writeMicroseconds(innerWheelSpeed);
   delay(delayTime);
 }
 

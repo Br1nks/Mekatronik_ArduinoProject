@@ -16,8 +16,7 @@ void setup() {
   FullSpeedAhead(travelTime);
   
   servoLeft.detach();
-  servoRight.detach();
-  
+  servoRight.detach();  
 }
 
 void loop() {

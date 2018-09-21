@@ -5,7 +5,7 @@ String Word = "SOS";
 // change sound to any number =! 0 to activate sound
 int sound = 1;
 
-int notes[NOTE_G4, Note_A3, NOTE_C1, NOTE_B2, NOTE_D2, NOTE_G5, NOTE_E3, NOTE_B1, NOTE_A2, NOTE_F4];
+int notes[10] = {NOTE_G4, Note_A3, NOTE_C1, NOTE_B2, NOTE_D2, NOTE_G5, NOTE_E3, NOTE_B1, NOTE_A2, NOTE_F4};
 int morseTic = 150;
 int morseLongTic = 2*morseTic;
 
