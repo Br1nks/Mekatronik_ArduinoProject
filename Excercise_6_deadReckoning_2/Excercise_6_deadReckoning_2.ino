@@ -3,10 +3,7 @@ Servo servoLeft;
 Servo servoRight;
 
 float fullSpeed = 0.165;
-float distance = 2;
-float travelTime = (distance/fullSpeed)*1000;
-
-float wheelBase = 0.101; // [m] distance between the wheels
+float wheelBase = 0.11; // [m] distance between the wheels
  
 void setup() {
   Serial.begin(9600);
@@ -15,16 +12,14 @@ void setup() {
 
   servoLeft.attach(12);
   servoRight.attach(11);
-  //FullSpeedAhead(travelTime);
-  RightCircularTurn(0.5, 5000);
+  
+  //RightCircularTurn(0.25);
+  LeftCircularTurn(0.25);
   
   servoLeft.detach();
   servoRight.detach();
 }
 void loop() {
-}
-
-void measureDistance() { 
 }
 
 void STOP(int delayTime) {
@@ -33,36 +28,37 @@ void STOP(int delayTime) {
   delay(delayTime);
 }
 
-void RightCircularTurn(float radius,int delayTime) {
-  int outerWheelSpeed = 1600;
-  float innerWheelSpeed = 1500+(100*(1-(radius+wheelBase)/radius));
-  Serial.println(innerWheelSpeed);
+void RightCircularTurn(float radius) {
+  float pulseVariance;
+  int outerWheelSpeed = 1700;
+  
+  // correction of speedvariance of the servos
+  if (radius < 0.15) {
+    pulseVariance = 7;
+  } else {
+    pulseVariance = 16*radius + 7.6;
+  }
+  
+  float innerWheelSpeed = 1500+pulseVariance-(100*(radius/(radius+wheelBase)));
+  float delayTime = ((2*(radius+wheelBase)*3.1415)/ fullSpeed)*1000;
   servoLeft.writeMicroseconds(outerWheelSpeed);
   servoRight.writeMicroseconds(innerWheelSpeed);
   delay(delayTime);
 }
 
-void RightQuarterTurn(int delayTime) {
-  servoLeft.writeMicroseconds(1450);
-  servoRight.writeMicroseconds(1450);
-  delay(delayTime);
-}
-
-void LeftQuarterTurn(int delayTime) {
-  servoLeft.writeMicroseconds(1550);
-  servoRight.writeMicroseconds(1550);
-  delay(delayTime);
-}
-
-void FullSpeedAhead(float delayTime) {
-  // ~0.18 m/s
-  servoRight.writeMicroseconds(1345);
-  servoLeft.writeMicroseconds(1700);
-  delay(delayTime);
-}
-void FullSpeedBackwards(float delayTime) {
-  // ~0.18 m/s
-  servoLeft.writeMicroseconds(1365);
-  servoRight.writeMicroseconds(1700);
+void LeftCircularTurn(float radius) {
+  float pulseVariance;
+  int outerWheelSpeed = 1345;
+  // correction of speedvariance of the servos
+  if (radius < 0.15) {
+    pulseVariance = 7;
+  } else {
+    pulseVariance = 16*radius + 7.6;
+  }
+  
+  float innerWheelSpeed = 1500-pulseVariance+(100*(radius/(radius+wheelBase)));
+  float delayTime = ((2*(radius+wheelBase)*3.1415)/ fullSpeed)*1000;
+  servoLeft.writeMicroseconds(innerWheelSpeed);
+  servoRight.writeMicroseconds(outerWheelSpeed);
   delay(delayTime);
 }
